@@ -8,8 +8,8 @@ import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Rect;
 
-public class ScoreField implements IDrawable, IUpdateable {
-	String score;
+public class ScoreField implements IDrawable {
+	public static String score;
 	Bitmap bitmap;
 	Paint paint;
 	Rect rect;
@@ -21,9 +21,8 @@ public class ScoreField implements IDrawable, IUpdateable {
 		this.rect = rect;
 	}
 
-	@Override
-	public void update(int score) {
-		this.score = Integer.toString(score);
+	public static void SCupdate(int x) {
+		score = Integer.toString(x);
 		
 	}
 

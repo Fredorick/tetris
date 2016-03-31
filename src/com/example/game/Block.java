@@ -5,12 +5,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 public class Block implements IDrawable, IUpdateable{
-	static int x = 20;
-	int y = 20;
+	int x;
+	static int y = 20;
 	int size;
 	Paint paint;
-	public Block (int size){
-		this.size = size/10;
+	public Block (int size, int x){
+		this.x = x;
+		this.size = size;
 		paint = new Paint();
 		paint.setColor(Color.RED);
 	}

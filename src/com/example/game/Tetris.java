@@ -24,10 +24,14 @@ public class Tetris extends SurfaceView implements IDrawable, IUpdateable, Surfa
 	int side;
 	int width;
 	int height;
+	int blocksize;
+	int Fieldram;
+	int gamefieldheight;
+	int gamefieldwidth;
 	Bitmap bitmap;
 	Rect gameFieldrect;
 	Rect scoreFieldrect;
-	Rect nextFieldrect;
+	Rect nextFieldrect;	
 	Paint paint;
 	GameField gameField;
 	ScoreField scoreField;
@@ -44,21 +48,17 @@ public class Tetris extends SurfaceView implements IDrawable, IUpdateable, Surfa
 		display = getResources().getDisplayMetrics();
 		width = display.widthPixels;
 		height = display.heightPixels;
-		int gamefieldwidth = (int)(width*0.75);
-		int gamefieldheight = (int)(height*0.9);
-		while(gamefieldwidth % 10 == 0){
-			gamefieldwidth++;
-		}
-		while(gamefieldheight % 10 == 0){
-			gamefieldheight++;
-		}
-		gameFieldrect = new Rect(20, 20, gamefieldwidth+20, gamefieldheight);
+		blocksize = (int)width/15;
+		Fieldram =  (int)width/60;
+		gamefieldwidth = 10*blocksize;
+		gamefieldheight = (int)(21*blocksize);
+		gameFieldrect = new Rect(Fieldram, Fieldram, gamefieldwidth+Fieldram, gamefieldheight);
 		gameField = new GameField(getResources(), gameFieldrect);
-		scoreFieldrect = new Rect(gamefieldwidth+40,(width-gamefieldwidth), width-20, 550 );
+		scoreFieldrect = new Rect(gamefieldwidth+2*Fieldram,(width-gamefieldwidth), width-Fieldram, 550 );
 		scoreField = new ScoreField(getResources(), scoreFieldrect);
-		nextFieldrect = new Rect(gamefieldwidth+40, 20,width-20, (width-gamefieldwidth - 20));
+		nextFieldrect = new Rect(gamefieldwidth+2*Fieldram, Fieldram,width-Fieldram, (width-gamefieldwidth - Fieldram));
 		nextField = new NextField(getResources(), nextFieldrect);
-		addObject(new Block(gamefieldwidth));
+		addObject(new Block(blocksize,Fieldram));
 	}
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
@@ -92,6 +92,7 @@ public class Tetris extends SurfaceView implements IDrawable, IUpdateable, Surfa
 				Canvas canvas = holder.lockCanvas();
 				if (canvas != null)
 				{
+					ScoreField.SCupdate(score);
 					draw(canvas);
 					holder.unlockCanvasAndPost(canvas);
 				}
@@ -139,8 +140,7 @@ public class Tetris extends SurfaceView implements IDrawable, IUpdateable, Surfa
 				((IUpdateable)objects[i]).update(x);
 			}
 		}
-		scoreField.update(score);
-		
+		score = Block.y;
 	}
 	
 
