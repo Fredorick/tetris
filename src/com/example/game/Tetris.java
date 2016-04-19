@@ -1,22 +1,23 @@
 package com.example.game;
 
+import util.MyButton;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.widget.Button;
 
-public class Tetris extends SurfaceView implements IDrawable, IUpdateable, SurfaceHolder.Callback, OnTouchListener{
+public class Tetris extends SurfaceView implements IDrawable, IUpdateable, SurfaceHolder.Callback, OnTouchListener
+
+
+{
 	
 	Object[] objects = new Object[100];
 	boolean touched = true;
@@ -32,11 +33,12 @@ public class Tetris extends SurfaceView implements IDrawable, IUpdateable, Surfa
 	Rect gameFieldrect;
 	Rect scoreFieldrect;
 	Rect nextFieldrect;	
+	Rect buttonRect;
 	Paint paint;
 	GameField gameField;
 	ScoreField scoreField;
 	NextField nextField;
-	
+	MyButton menuButoon;
 	int score;
 	public Tetris(Context context) {
 		super(context);
@@ -54,10 +56,12 @@ public class Tetris extends SurfaceView implements IDrawable, IUpdateable, Surfa
 		gamefieldheight = (int)(21*blocksize);
 		gameFieldrect = new Rect(Fieldram, Fieldram, gamefieldwidth+Fieldram, gamefieldheight);
 		gameField = new GameField(getResources(), gameFieldrect);
-		scoreFieldrect = new Rect(gamefieldwidth+2*Fieldram,(width-gamefieldwidth), width-Fieldram, 550 );
-		scoreField = new ScoreField(getResources(), scoreFieldrect);
 		nextFieldrect = new Rect(gamefieldwidth+2*Fieldram, Fieldram,width-Fieldram, (width-gamefieldwidth - Fieldram));
 		nextField = new NextField(getResources(), nextFieldrect);
+		scoreFieldrect = new Rect(gamefieldwidth+2*Fieldram,(width-gamefieldwidth), width-Fieldram, (width-gamefieldwidth + Fieldram + nextFieldrect.height()) );
+		scoreField = new ScoreField(getResources(), scoreFieldrect);
+		buttonRect = new Rect(3*Fieldram,gamefieldheight+Fieldram,width-3*Fieldram,height-Fieldram);
+		menuButoon = new MyButton(getResources(), "Menu");
 		addObject(new Block(blocksize,Fieldram));
 	}
 	@Override
@@ -81,13 +85,13 @@ public class Tetris extends SurfaceView implements IDrawable, IUpdateable, Surfa
 		
 	}
 	
+	
 	class Motor extends Thread{
 		SurfaceHolder holder = getHolder();
 		public void run (){
 			
 			//paint.setAntiAlias(true);
 			paint.setColor(Color.RED);//0xFFFF0000
-			int x=0, y=0;
 			while(true){
 				Canvas canvas = holder.lockCanvas();
 				if (canvas != null)
@@ -121,6 +125,7 @@ public class Tetris extends SurfaceView implements IDrawable, IUpdateable, Surfa
 		gameField.draw(canvas);
 		scoreField.draw(canvas);
 		nextField.draw(canvas);
+		menuButoon.draw(canvas,buttonRect);
 		for(int i = 99; i >= 0;i--){
 			if (objects[i] != null && objects[i] instanceof IDrawable){
 				((IDrawable)objects[i]).draw(canvas);

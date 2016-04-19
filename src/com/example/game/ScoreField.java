@@ -9,29 +9,37 @@ import android.graphics.Paint.Align;
 import android.graphics.Rect;
 
 public class ScoreField implements IDrawable {
-	public static String score;
+	public static String textScore;
+	static int score;
 	Bitmap bitmap;
 	Paint paint;
 	Rect rect;
 	Align align = Align.CENTER;
 	public ScoreField(Resources res, Rect rect) {
-		score = "0";
+		textScore = "0";
 		paint = new Paint();
 		bitmap = BitmapFactory.decodeResource(res, R.drawable.fon2);
 		this.rect = rect;
 	}
 
 	public static void SCupdate(int x) {
-		score = Integer.toString(x);
-		
+		textScore = Integer.toString(x);
+		score = x;
 	}
 
 	@Override
 	public void draw(Canvas canvas) {
 		canvas.drawBitmap(bitmap, null, rect, paint);
-		paint.setTextSize(rect.height()/2);
+		if(score<1000 && score >=0){
+		paint.setTextSize(rect.height()/2);}
+		else if(score<10000 && score >=1000){
+		paint.setTextSize(rect.height()/3);
+		}
+		else if(score>=10000){
+		paint.setTextSize(rect.height()/4);
+		}
 		paint.setTextAlign(align);
-		canvas.drawText(score, rect.centerX(), (int)(rect.centerY()*1.1), paint);
+		canvas.drawText(textScore, rect.centerX(), (int)(rect.centerY()*1.1), paint);
 		
 	}
 
