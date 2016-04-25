@@ -6,7 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 public class Block implements IDrawable, IUpdateable{
-	int x;
+	static int x;
 	static int y = 200;
 	static int size;
 	Paint paint;
@@ -20,7 +20,7 @@ public class Block implements IDrawable, IUpdateable{
 		this.x = x;
 		paint = new Paint();
 		paint.setColor(Color.RED);		
-		rectblock = new Rect(x, x, size+x, size+x);
+		rectblock = new Rect(x, y, size+x, size+y);
 	}
 	public void draw(Canvas canvas){
 		canvas.drawRect(x, y, size+x, size+y , paint);
@@ -28,7 +28,7 @@ public class Block implements IDrawable, IUpdateable{
 	}
 	@Override
 	public void update(int side) {
-		rectblock = new Rect(x, x, size+x, size+x);
+		rectblock = new Rect(x, y, size+x, size+y);
 			
 		if(!(GameField.TryLeft(rectblock)))
 			canGOLeft = false;

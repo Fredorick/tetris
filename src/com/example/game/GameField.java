@@ -10,11 +10,12 @@ import android.graphics.Rect;
 public class GameField extends Field implements IDrawable {
 	Bitmap bitmap;
 	Paint paint;
-	private static Rect rect;
+	private Rect rect;
 	static int size = Block.size;
 	static int rectleft;
 	static int rectright;
 	static int rectbottom;
+	static boolean next = false;
 	public GameField(Resources res, Rect rect) {
 		paint = new Paint();
 		bitmap = BitmapFactory.decodeResource(res, R.drawable.fon2);
@@ -29,17 +30,22 @@ public class GameField extends Field implements IDrawable {
 		}
 		return false;	
 	}
+	public static boolean TryNext(){
+		return next;
+	}
 	public static boolean TryRight(Rect rect){
 		if(rect.right < rectright){
 			return true;
 		}
 		return false;	
 	}
-	public static boolean TryBottom(Rect blockrect){
-		if( blockrect.bottom <  rectbottom){
-			return true;	
+	public static boolean TryBottom(Rect rect){
+		if( rect.bottom <= rectbottom){
+			next = false;
+			return true;
 		}
-		return false;	
+		next = true;
+		return false;
 	}
 	@Override
 	public void draw(Canvas canvas) {

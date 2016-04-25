@@ -18,7 +18,6 @@ public class Tetris extends SurfaceView implements IDrawable, IUpdateable, Surfa
 
 
 {
-	
 	Object[] objects = new Object[100];
 	boolean touched = true;
 	DisplayMetrics display;
@@ -84,8 +83,6 @@ public class Tetris extends SurfaceView implements IDrawable, IUpdateable, Surfa
 		// TODO Auto-generated method stub
 		
 	}
-	
-	
 	class Motor extends Thread{
 		SurfaceHolder holder = getHolder();
 		public void run (){
@@ -111,14 +108,6 @@ public class Tetris extends SurfaceView implements IDrawable, IUpdateable, Surfa
 			}
 		}
 	}
-	/*class Score extends Thread{
-		public void run (){
-			
-			while(true){
-				
-			}
-		}
-	}*/
 	public void draw(Canvas canvas)
 	{	
 		canvas.drawColor(Color.DKGRAY);
