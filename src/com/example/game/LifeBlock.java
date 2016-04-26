@@ -5,28 +5,50 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
-public class Block implements IDrawable, IUpdateable{
+public class LifeBlock extends Blocks implements IDrawable, IUpdateable, Moveable{
 	static int x;
 	static int y = 200;
-	static int size;
-	Paint paint;
-	Rect rectblock;
+	protected static int size;
+	static Paint paint;
+	static Rect rectblock;
 	boolean canGO = true;
 	boolean canGOLeft;
 	boolean canGORight;
 	boolean canGOB;
-	public Block (int size, int x){
+	final int red;
+	final int green;
+	final int blue;
+	@SuppressWarnings("static-access")
+	public LifeBlock (int size, int x){
 		this.size = size;
-		this.x = x;
+		this.x = x+2*size;
+		blue = (int) (Math.random()*255);
+		green = (int) (Math.random()*255);
+		red = (int) (Math.random()*255);
 		paint = new Paint();
-		paint.setColor(Color.RED);		
+		paint.setColor(Color.rgb(green, red, blue));		
 		rectblock = new Rect(x, y, size+x, size+y);
 	}
 	public void draw(Canvas canvas){
 		canvas.drawRect(x, y, size+x, size+y , paint);
 		
 	}
-	@Override
+	public boolean CanGo(){
+		if(!canGOB)
+		return false;
+		else
+		return true;
+	}
+	public static int ReturnSize(){
+		return size;
+	}
+	public static Rect ReturnRect(){
+		return rectblock;
+	}
+	public static Paint ReturnPaint(){
+		return paint;
+	}
+
 	public void update(int side) {
 		rectblock = new Rect(x, y, size+x, size+y);
 			
@@ -38,7 +60,7 @@ public class Block implements IDrawable, IUpdateable{
 			canGORight = false;
 		else canGORight =  true;
 		
-		if(GameField.TryBottom(rectblock))
+		if(GameField.TryBottom(rectblock, this))
 			 canGOB =  true;		
 		else canGOB = false;
 		
@@ -50,5 +72,10 @@ public class Block implements IDrawable, IUpdateable{
 						else       {  if(canGOLeft)   x-=size;   }	
 			}
 		}
+	}
+	@Override
+	public void moveable() {
+		// TODO Auto-generated method stub
+		
 	}
 }

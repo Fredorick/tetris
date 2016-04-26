@@ -11,7 +11,7 @@ public class GameField extends Field implements IDrawable {
 	Bitmap bitmap;
 	Paint paint;
 	private Rect rect;
-	static int size = Block.size;
+	static int size = LifeBlock.ReturnSize();
 	static int rectleft;
 	static int rectright;
 	static int rectbottom;
@@ -39,10 +39,14 @@ public class GameField extends Field implements IDrawable {
 		}
 		return false;	
 	}
-	public static boolean TryBottom(Rect rect){
-		if( rect.bottom <= rectbottom){
+	public static boolean TryBottom(Rect rect, LifeBlock block){
+		if( rect.bottom < rectbottom){
 			next = false;
 			return true;
+		}
+		if(  new NextDeadBlock(block) instanceof DeadBlock  ){
+			next = true;
+			return false;
 		}
 		next = true;
 		return false;
